@@ -4,12 +4,13 @@
 
 # Workflow for pushes to a rel-* release
 
-name: Push to rel branch
+name: Build and release
 on:
   push:
     branches:
       - 'main'
       - 'rel-*'
+      - 'dev/**'
 env:
   EDKREPO_URL: https://github.com/tianocore/edk2-edkrepo/releases/download/edkrepo-v2.1.2/edkrepo-2.1.2.tar.gz
   EDKREPO_NVIDIA_MANIFEST_REPO: https://github.com/NVIDIA/edk2-edkrepo-manifest.git
@@ -67,6 +68,9 @@ jobs:
         run: |
           cd ${{ github.workspace }}/workspace
           edk2-nvidia/Platform/NVIDIA/Jetson/build.sh
+          edk2-nvidia/Platform/NVIDIA/StandaloneMmOptee/build.sh
+          edk2-nvidia/Platform/NVIDIA/StandaloneMm/build.sh
+          edk2-nvidia/Platform/NVIDIA/Server/build.sh
       - name: Package
         id: package
         run: |
